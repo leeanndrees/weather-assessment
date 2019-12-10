@@ -35,8 +35,11 @@ final class WeatherNetworking {
             let decoder = JSONDecoder()
             do {
                 let decoded = try decoder.decode(CurrentWeather.self, from: data)
-                print(decoded)
-                success(decoded)
+                
+                DispatchQueue.main.async {
+                    success(decoded)
+                }
+                
             } catch {
                 print("error decoding")
                 failure(error)
