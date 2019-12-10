@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+struct CurrentWeather: Decodable {
+    let weather: [Weather]
+    let main: MainData
+}
+
+struct Weather: Decodable {
+    let description: String
+}
+
+struct MainData: Decodable {
+    let temp: Double
+}
