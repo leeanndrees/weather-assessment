@@ -16,7 +16,7 @@ protocol CurrentWeatherDelegate: AnyObject {
 class CurrentWeatherViewModel {
     weak var delegate: CurrentWeatherDelegate?
     
-    func getCurrentWeather(latitude: Int, longitude: Int) {
+    func getCurrentWeather(latitude: Double, longitude: Double) {
         WeatherNetworking.shared.getCurrentWeather(latitude: latitude, longitude: longitude, success: { (weather) in
             let temp = String(weather.main.temp)
             let desc = weather.weather[0].description

@@ -15,7 +15,7 @@ final class WeatherNetworking {
     
     static let shared = WeatherNetworking()
     
-    public func getCurrentWeather(latitude: Int, longitude: Int, success: @escaping (CurrentWeather) -> Void, failure: @escaping (Error) -> Void) {
+    func getCurrentWeather(latitude: Double, longitude: Double, success: @escaping (CurrentWeather) -> Void, failure: @escaping (Error) -> Void) {
         let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(key)"
         
         guard let url = URL(string: urlString) else { print("couldn't use url"); return }

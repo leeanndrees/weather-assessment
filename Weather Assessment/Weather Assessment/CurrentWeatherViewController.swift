@@ -14,12 +14,17 @@ class CurrentWeatherViewController: UIViewController {
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     lazy var viewModel = CurrentWeatherViewModel()
+    var location: CLLocation? {
+        didSet {
+            getWeatherForLocation()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupLocationManager()
         viewModel.delegate = self
-        viewModel.getCurrentWeather(latitude: 35, longitude: 129)
     }
 }
 
@@ -35,6 +40,32 @@ extension CurrentWeatherViewController: CurrentWeatherDelegate {
         alert.addAction(okAction)
         present(alert, animated: true)
     }
+}
+
+extension CurrentWeatherViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locationToUse = locations.last else { return }
+        location = locationToUse
+        
+        getWeatherForLocation()
+    }
     
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        let alert = UIAlertController(title: "Could not get location", message: error.localizedDescription, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
+    
+    func getWeatherForLocation() {
+        guard let latitude = location?.coordinate.latitude, let longitude = location?.coordinate.longitude else { return }
+        viewModel.getCurrentWeather(latitude: latitude, longitude: longitude)
+    }
+    
+    fileprivate func setupLocationManager() {
+        LocationManager.shared.delegate = self
+        LocationManager.shared.requestWhenInUseAuthorization()
+        LocationManager.shared.requestLocation()
+    }
 }
 

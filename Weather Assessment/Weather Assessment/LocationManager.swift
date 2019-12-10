@@ -8,3 +8,7 @@
 
 import CoreLocation
 import Foundation
+
+class LocationManager {
+    static let shared = CLLocationManager()
+}
